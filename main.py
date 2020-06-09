@@ -39,6 +39,20 @@ def getContours(img):
     return biggest
 
 
+def getWarp(img,biggest):
+    biggest = reorder(biggest)
+    pts1 = np.float32(biggest)
+    pts2 = np.float32([[0, 0], [widthImg, 0], [0, heightImg], [widthImg, heightImg]])
+    matrix = cv2.getPerspectiveTransform(pts1, pts2)
+    imgOutput = cv2.warpPerspective(img, matrix, (widthImg, heightImg))
+
+    imgCropped = imgOutput[20:imgOutput.shape[0]-20,20:imgOutput.shape[1]-20]
+    imgCropped = cv2.resize(imgCropped,(widthImg,heightImg))
+
+    return imgCropped
+
+
+
 
 while True:
     success,img=cap.read()
