@@ -39,6 +39,19 @@ def getContours(img):
     return biggest
 
 
+def reorder (myPoints):
+    myPoints = myPoints.reshape((4,2))
+    myPointsNew = np.zeros((4,1,2),np.int32)
+    add = myPoints.sum(1)
+    myPointsNew[0] = myPoints[np.argmin(add)]
+    myPointsNew[3] = myPoints[np.argmax(add)]
+    diff = np.diff(myPoints,axis=1)
+    myPointsNew[1]= myPoints[np.argmin(diff)]
+    myPointsNew[2] = myPoints[np.argmax(diff)]
+    return myPointsNew
+
+
+
 def getWarp(img,biggest):
     biggest = reorder(biggest)
     pts1 = np.float32(biggest)
